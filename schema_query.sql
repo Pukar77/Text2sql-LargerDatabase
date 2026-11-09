@@ -1,0 +1,117 @@
+--sql query to find the column and and its datatype
+SELECT
+    c.OWNER,
+    c.TABLE_NAME,
+    c.COLUMN_NAME,
+    c.DATA_TYPE,
+    c.DATA_LENGTH,
+    c.DATA_PRECISION,
+    c.DATA_SCALE,
+    c.NULLABLE,
+    c.COLUMN_ID,
+
+    cc.COMMENTS AS COLUMN_DESCRIPTION,
+    tc.COMMENTS AS TABLE_DESCRIPTION,
+
+    CASE
+        WHEN pk.COLUMN_NAME IS NOT NULL THEN 'PRIMARY KEY'
+        WHEN fk.COLUMN_NAME IS NOT NULL THEN 'FOREIGN KEY'
+        WHEN uk.COLUMN_NAME IS NOT NULL THEN 'UNIQUE KEY'
+        ELSE 'NOT A KEY'
+    END AS KEY_TYPE,
+
+    pk.CONSTRAINT_NAME AS PK_CONSTRAINT_NAME,
+    fk.CONSTRAINT_NAME AS FK_CONSTRAINT_NAME,
+    fk.REFERENCED_OWNER,
+    fk.REFERENCED_TABLE,
+    fk.REFERENCED_COLUMN,
+    uk.CONSTRAINT_NAME AS UK_CONSTRAINT_NAME
+
+FROM ALL_TAB_COLUMNS c
+
+LEFT JOIN ALL_COL_COMMENTS cc
+    ON c.OWNER = cc.OWNER
+    AND c.TABLE_NAME = cc.TABLE_NAME
+    AND c.COLUMN_NAME = cc.COLUMN_NAME
+
+LEFT JOIN ALL_TAB_COMMENTS tc
+    ON c.OWNER = tc.OWNER
+    AND c.TABLE_NAME = tc.TABLE_NAME
+
+/* Primary Key */
+LEFT JOIN (
+    SELECT
+        acc.OWNER,
+        acc.TABLE_NAME,
+        acc.COLUMN_NAME,
+        ac.CONSTRAINT_NAME
+    FROM ALL_CONSTRAINTS ac
+    JOIN ALL_CONS_COLUMNS acc
+        ON ac.OWNER = acc.OWNER
+        AND ac.CONSTRAINT_NAME = acc.CONSTRAINT_NAME
+        AND ac.TABLE_NAME = acc.TABLE_NAME
+    WHERE ac.CONSTRAINT_TYPE = 'P'
+) pk
+    ON c.OWNER = pk.OWNER
+    AND c.TABLE_NAME = pk.TABLE_NAME
+    AND c.COLUMN_NAME = pk.COLUMN_NAME
+
+/* Foreign Key */
+LEFT JOIN (
+    SELECT
+        acc.OWNER,
+        acc.TABLE_NAME,
+        acc.COLUMN_NAME,
+        ac.CONSTRAINT_NAME,
+        r_ac.OWNER AS REFERENCED_OWNER,
+        r_ac.TABLE_NAME AS REFERENCED_TABLE,
+        r_acc.COLUMN_NAME AS REFERENCED_COLUMN
+    FROM ALL_CONSTRAINTS ac
+    JOIN ALL_CONS_COLUMNS acc
+        ON ac.OWNER = acc.OWNER
+        AND ac.CONSTRAINT_NAME = acc.CONSTRAINT_NAME
+        AND ac.TABLE_NAME = acc.TABLE_NAME
+
+    JOIN ALL_CONSTRAINTS r_ac
+        ON ac.R_OWNER = r_ac.OWNER
+        AND ac.R_CONSTRAINT_NAME = r_ac.CONSTRAINT_NAME
+
+    JOIN ALL_CONS_COLUMNS r_acc
+        ON r_ac.OWNER = r_acc.OWNER
+        AND r_ac.CONSTRAINT_NAME = r_acc.CONSTRAINT_NAME
+        AND r_ac.TABLE_NAME = r_acc.TABLE_NAME
+        AND acc.POSITION = r_acc.POSITION
+
+    WHERE ac.CONSTRAINT_TYPE = 'R'
+) fk
+    ON c.OWNER = fk.OWNER
+    AND c.TABLE_NAME = fk.TABLE_NAME
+    AND c.COLUMN_NAME = fk.COLUMN_NAME
+
+/* Unique Key */
+LEFT JOIN (
+    SELECT
+        acc.OWNER,
+        acc.TABLE_NAME,
+        acc.COLUMN_NAME,
+        ac.CONSTRAINT_NAME
+    FROM ALL_CONSTRAINTS ac
+    JOIN ALL_CONS_COLUMNS acc
+        ON ac.OWNER = acc.OWNER
+        AND ac.CONSTRAINT_NAME = acc.CONSTRAINT_NAME
+        AND ac.TABLE_NAME = acc.TABLE_NAME
+    WHERE ac.CONSTRAINT_TYPE = 'U'
+) uk
+    ON c.OWNER = uk.OWNER
+    AND c.TABLE_NAME = uk.TABLE_NAME
+    AND c.COLUMN_NAME = uk.COLUMN_NAME
+
+WHERE c.OWNER = 'DEMO'
+    AND c.TABLE_NAME IN (
+        'table_name_1',
+        'table_name_2'
+    )
+
+ORDER BY
+    c.TABLE_NAME,
+    c.COLUMN_ID

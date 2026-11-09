@@ -1,0 +1,256 @@
+{
+    "database": "Oracle",
+    "schema_count": 1,
+    "table_count": 3,
+    "tables": [
+        {
+            "owner": "DEMO_SCHEMA",
+            "table_name": "PRODUCT_DETAILS",
+            "table_description": "Stores product details and specifications.",
+            "columns": [
+                {
+                    "column_name": "PRODUCT_ID",
+                    "data_type": "VARCHAR2",
+                    "data_length": 30,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "N",
+                    "column_id": 1,
+                    "column_description": "Unique identifier for the product.",
+                    "key_type": "PRIMARY KEY",
+                    "primary_key_constraint": "PK_PRODUCT_DETAILS",
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "PRODUCT_NAME",
+                    "data_type": "VARCHAR2",
+                    "data_length": 255,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "N",
+                    "column_id": 2,
+                    "column_description": "Name of the product.",
+                    "key_type": "NOT A KEY",
+                    "primary_key_constraint": null,
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "BRAND_NAME",
+                    "data_type": "VARCHAR2",
+                    "data_length": 100,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "Y",
+                    "column_id": 3,
+                    "column_description": "Brand associated with the product.",
+                    "key_type": "NOT A KEY",
+                    "primary_key_constraint": null,
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "CATEGORY",
+                    "data_type": "VARCHAR2",
+                    "data_length": 100,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "Y",
+                    "column_id": 4,
+                    "column_description": "Category of the product.",
+                    "key_type": "NOT A KEY",
+                    "primary_key_constraint": null,
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "COMPANY_ID",
+                    "data_type": "VARCHAR2",
+                    "data_length": 30,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "N",
+                    "column_id": 5,
+                    "column_description": "Company identifier.",
+                    "key_type": "PRIMARY KEY",
+                    "primary_key_constraint": "PK_PRODUCT_DETAILS",
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                }
+            ]
+        },
+        {
+            "owner": "DEMO_SCHEMA",
+            "table_name": "SALES_TRANSACTIONS",
+            "table_description": "Stores product sales transaction records.",
+            "columns": [
+                {
+                    "column_name": "TRANSACTION_ID",
+                    "data_type": "VARCHAR2",
+                    "data_length": 20,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "N",
+                    "column_id": 1,
+                    "column_description": "Unique sales transaction number.",
+                    "key_type": "PRIMARY KEY",
+                    "primary_key_constraint": "PK_SALES_TRANSACTIONS",
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "TRANSACTION_DATE",
+                    "data_type": "DATE",
+                    "data_length": 7,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "N",
+                    "column_id": 2,
+                    "column_description": "Date of the sales transaction.",
+                    "key_type": "NOT A KEY",
+                    "primary_key_constraint": null,
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "PRODUCT_ID",
+                    "data_type": "VARCHAR2",
+                    "data_length": 30,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "N",
+                    "column_id": 3,
+                    "column_description": "Product sold in the transaction.",
+                    "key_type": "NOT A KEY",
+                    "primary_key_constraint": null,
+                    "foreign_key": {
+                        "constraint_name": "FK_SALES_PRODUCT",
+                        "referenced_table": "PRODUCT_DETAILS",
+                        "referenced_column": "PRODUCT_ID"
+                    },
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "QUANTITY_SOLD",
+                    "data_type": "NUMBER",
+                    "data_length": 22,
+                    "data_precision": 10,
+                    "data_scale": 2,
+                    "nullable": "N",
+                    "column_id": 4,
+                    "column_description": "Quantity of products sold.",
+                    "key_type": "NOT A KEY",
+                    "primary_key_constraint": null,
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "UNIT_COST",
+                    "data_type": "NUMBER",
+                    "data_length": 22,
+                    "data_precision": 10,
+                    "data_scale": 2,
+                    "nullable": "Y",
+                    "column_id": 5,
+                    "column_description": "Price per product unit.",
+                    "key_type": "NOT A KEY",
+                    "primary_key_constraint": null,
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "TOTAL_AMOUNT",
+                    "data_type": "NUMBER",
+                    "data_length": 22,
+                    "data_precision": 12,
+                    "data_scale": 2,
+                    "nullable": "Y",
+                    "column_id": 6,
+                    "column_description": "Total sales amount.",
+                    "key_type": "NOT A KEY",
+                    "primary_key_constraint": null,
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "COMPANY_ID",
+                    "data_type": "VARCHAR2",
+                    "data_length": 30,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "N",
+                    "column_id": 7,
+                    "column_description": "Company identifier.",
+                    "key_type": "PRIMARY KEY",
+                    "primary_key_constraint": "PK_SALES_TRANSACTIONS",
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                }
+            ]
+        },
+        {
+            "owner": "DEMO_SCHEMA",
+            "table_name": "CUSTOMER_DETAILS",
+            "table_description": "Stores customer information.",
+            "columns": [
+                {
+                    "column_name": "CUSTOMER_ID",
+                    "data_type": "VARCHAR2",
+                    "data_length": 30,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "N",
+                    "column_id": 1,
+                    "column_description": "Unique identifier for the customer.",
+                    "key_type": "PRIMARY KEY",
+                    "primary_key_constraint": "PK_CUSTOMER_DETAILS",
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "CUSTOMER_NAME",
+                    "data_type": "VARCHAR2",
+                    "data_length": 255,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "N",
+                    "column_id": 2,
+                    "column_description": "Full name of the customer.",
+                    "key_type": "NOT A KEY",
+                    "primary_key_constraint": null,
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "EMAIL_ADDRESS",
+                    "data_type": "VARCHAR2",
+                    "data_length": 255,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "Y",
+                    "column_id": 3,
+                    "column_description": "Customer email address.",
+                    "key_type": "NOT A KEY",
+                    "primary_key_constraint": null,
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                },
+                {
+                    "column_name": "COMPANY_ID",
+                    "data_type": "VARCHAR2",
+                    "data_length": 30,
+                    "data_precision": null,
+                    "data_scale": null,
+                    "nullable": "N",
+                    "column_id": 4,
+                    "column_description": "Company identifier.",
+                    "key_type": "PRIMARY KEY",
+                    "primary_key_constraint": "PK_CUSTOMER_DETAILS",
+                    "foreign_key": null,
+                    "unique_key_constraint": null
+                }
+            ]
+        }
+    ]
+}
